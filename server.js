@@ -16,6 +16,9 @@ const ping = require('./routes/ping')
 
 const app = express()
 
+// body parser
+app.use(express.json())
+
 // bind routes
 app.use('/ping', ping)
 app.use('/api/v1/transactions', transactions)
