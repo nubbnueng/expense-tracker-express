@@ -7,11 +7,16 @@ dotenv.config({
     path: './config/config.env'
 })
 
+// routers
+const transactions = require('./routes/transactions')
+const ping = require('./routes/ping')
+
 const app = express()
 
-app.get('/ping', (req, res) => {
-    res.send('pong')
-})
+// bind routes
+app.use('/ping', ping)
+app.use('/api/v1/transactions', transactions)
+
 
 const PORT = process.env.PORT || 5000
 
