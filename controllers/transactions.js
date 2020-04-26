@@ -14,7 +14,7 @@ exports.getTransactions = async (req, res, next) => {
     } catch (error) {
         return res.status(500).json({
             success: false,
-            message: `Server error: ${error.message}`
+            error: `Server error: ${error.message}`
         })
     }
 }
@@ -32,10 +32,18 @@ exports.addTransactions = async (req, res, next) => {
             data: transaction
         })
     } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: `Server error: ${error.message}`
-        })
+        if (error.name === 'ValidationError') {
+            const messages = Object.values(error.errors).map(err => err.message)
+            return res.status(500).json({
+                success: false,
+                errors: messages
+            })
+        } else {
+            return res.status(500).json({
+                success: false,
+                error: `Server error: ${error.message}`
+            })
+        }
     }
 
 }
